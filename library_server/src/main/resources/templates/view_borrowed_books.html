@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Borrowed Books</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #4e73df;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            border-bottom: 3px solid #4e73df;
+            padding-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4e73df;
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        td {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f1f1f1;
+        }
+
+        tr:hover {
+            background-color: #e2e6ea;
+        }
+
+        a.button {
+            display: inline-block;
+            text-decoration: none;
+            color: #fff;
+            background-color: #4e73df;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        a.button:hover {
+            background-color: #2e59d9;
+        }
+
+        .flash-messages {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .flash-messages.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .flash-messages.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .search-container input[type="text"], .search-container input[type="number"] {
+            padding: 12px;
+            font-size: 1rem;
+            width: 300px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            margin-right: 10px;
+            transition: border-color 0.3s;
+        }
+
+        .search-container input[type="text"]:focus, .search-container input[type="number"]:focus {
+            border-color: #4e73df;
+            outline: none;
+        }
+
+        .search-container button {
+            padding: 12px 25px;
+            font-size: 1rem;
+            background-color: #4e73df;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-container button:hover {
+            background-color: #2e59d9;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>View Borrowed Books</h1>
+
+    <!-- Search Form -->
+    <form th:action="@{/view_borrowed_books}" method="get">
+        <div class="search-container">
+            <label>
+                <input type="text" name="searchQuery" th:value="${searchQuery}" placeholder="Search by Title or Author" />
+            </label>
+
+            <!-- Admin can search by userId -->
+            <div th:if="${role == 'ADMIN'}">
+                <label>
+                    <input type="number" name="userId" th:value="${userId}" placeholder="Search by User ID" />
+                </label>
+            </div>
+
+            <button type="submit">Search</button>
+        </div>
+    </form>
+
+    <!-- Borrowed Books Table -->
+    <table>
+        <thead>
+        <tr>
+            <th>Book ID</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Borrowed Date</th>
+            <th>Due Date</th>
+            <th th:if="${role == 'ADMIN'}">Username</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="borrowed_book : ${borrowedBooks}">
+            <td th:text="${borrowed_book.bookId}">1</td>
+            <td th:text="${borrowed_book.title}">Sample Title</td>
+            <td th:text="${borrowed_book.author}">Author</td>
+            <td th:text="${borrowed_book.borrowedDate}">2025-01-01</td>
+            <td th:text="${borrowed_book.dueDate}">2025-01-10</td>
+            <td th:if="${role == 'ADMIN'}" th:text="${borrowed_book.username}">user123</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Back to Library Button -->
+    <a th:href="@{/library}" class="button">Back to Library</a>
+
+    <!-- Flash Messages -->
+    <div th:if="${messages != null and !messages.isEmpty()}" class="flash-messages">
+        <ul>
+            <li th:each="message : ${messages.entrySet()}"
+                th:class="'flash-messages ' + ${message.key}"
+                th:text="${message.value}">
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

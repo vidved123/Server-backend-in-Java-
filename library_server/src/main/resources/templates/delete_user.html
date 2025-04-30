@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete User</title>
+    <style>
+        /* Vibrant Background and Base Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e0c3fc, #8ec5fc);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: start;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 950px;
+            margin: 60px auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #4b2e83;
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+        }
+
+        /* Flash Message Styling */
+        .message {
+            margin-bottom: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .success {
+            background-color: #d1f5d3;
+            color: #0a3622;
+            border: 1px solid #a8e9b3;
+        }
+
+        .danger {
+            background-color: #ffd6d6;
+            color: #842029;
+            border: 1px solid #f1a1a1;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        th, td {
+            padding: 18px;
+            text-align: left;
+            font-size: 16px;
+        }
+
+        th {
+            background-color: #5f4b8b;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            color: #444;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9fb;
+        }
+
+        tr:hover {
+            background-color: #eef1f8;
+        }
+
+        /* Buttons */
+        .delete-button {
+            background: linear-gradient(135deg, #f85032, #e73827);
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s;
+        }
+
+        .delete-button:hover {
+            background: linear-gradient(135deg, #d73827, #b53024);
+            transform: scale(1.05);
+        }
+
+        .back-button {
+            margin-top: 40px;
+        }
+
+        .back-button a {
+            text-decoration: none;
+            background: linear-gradient(135deg, #36d1dc, #5b86e5);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: background 0.3s ease, transform 0.2s;
+        }
+
+        .back-button a:hover {
+            background: linear-gradient(135deg, #3396dc, #4b6bd3);
+            transform: scale(1.05);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            table, th, td {
+                font-size: 14px;
+                padding: 12px;
+            }
+
+            .delete-button {
+                padding: 8px 15px;
+                font-size: 13px;
+            }
+
+            .back-button a {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Delete User</h1>
+
+    <!-- Flash Messages -->
+    <div th:if="${message}">
+        <div class="message" th:classappend="' ' + ${messageCategory}">
+            <span th:text="${message}">Message goes here</span>
+        </div>
+    </div>
+
+    <!-- User Table -->
+    <div th:if="${not #lists.isEmpty(allUsers)}">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Full Name</th>
+                <th>Username</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${allUsers}">
+                <td th:text="${user.id}">1</td>
+                <td th:text="${user.fullName}">John Doe</td>
+                <td th:text="${user.username}">johndoe</td>
+                <td>
+                    <form th:action="@{/delete_user}" method="post"
+                          onsubmit="return confirm('Are you sure you want to delete this user?');">
+                        <input type="hidden" name="user_id" th:value="${user.id}"/>
+                        <button type="submit" class="delete-button">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <p th:if="${#lists.isEmpty(allUsers)}">No users available.</p>
+
+    <!-- Back Button -->
+    <div class="back-button">
+        <a th:href="@{/dashboard}">Back to Dashboard</a>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Books</title>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #ffffff;
+            padding: 20px 0;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #FF5733, #FFC300);
+            border-bottom: 3px solid #FF5733;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .container {
+            position: relative;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Flexbox for aligning search bar and buttons */
+        .search-form-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .search-form input {
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 300px;
+            transition: border-color 0.3s;
+        }
+
+        .search-form input:focus {
+            border-color: #FF5733;
+            outline: none;
+        }
+
+        .search-form button {
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            background-color: #FF5733;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-form button:hover {
+            background-color: #FF4500;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .button-group button,
+        .button-group a {
+            padding: 12px 18px;
+            font-size: 14px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .delete-button {
+            background-color: #dc3545;
+        }
+
+        .delete-button:hover {
+            background-color: #c82333;
+            transform: scale(1.05);
+        }
+
+        .back-button {
+            background-color: #28a745;
+        }
+
+        .back-button:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #FF5733;
+            color: #ffffff;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        td {
+            font-size: 16px;
+            color: #555;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        img {
+            max-width: 100px;
+            max-height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .flash-messages {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .flash-messages .info {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .flash-messages .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .no-image {
+            color: #888;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .search-form input {
+                width: 100%;
+            }
+
+            .search-form button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+
+            table {
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+
+            .button-group {
+                flex-direction: column;
+                top: 10px;
+                right: 10px;
+            }
+
+            .button-group button, .button-group a {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+
+    <script>
+        function deleteBooks() {
+            var selectedBookIds = [];
+            document.querySelectorAll('input[name="book_ids"]:checked').forEach(function (checkbox) {
+                selectedBookIds.push(checkbox.value);
+            });
+
+            if (selectedBookIds.length === 0) {
+                alert('Please select at least one book to delete.');
+                return;
+            }
+
+            if (confirm('Are you sure you want to delete the selected books?')) {
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/delete_books';
+
+                var csrfTokenInput = document.querySelector('input[name="_csrf"]');
+                if (csrfTokenInput) {
+                    var csrfInput = document.createElement('input');
+                    csrfInput.type = 'hidden';
+                    csrfInput.name = '_csrf';
+                    csrfInput.value = csrfTokenInput.value;
+                    form.appendChild(csrfInput);
+                }
+
+                selectedBookIds.forEach(function (bookId) {
+                    var input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'book_ids';
+                    input.value = bookId;
+                    form.appendChild(input);
+                });
+
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+
+        function selectAll(source) {
+            const checkboxes = document.getElementsByName('book_ids');
+            checkboxes.forEach ? checkboxes.forEach(cb => cb.checked = source.checked) :
+                Array.from(checkboxes).forEach(cb => cb.checked = source.checked);
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+
+    <h1>View Books</h1>
+
+    <!-- Search Bar and Buttons on the Right -->
+    <div class="search-form-container">
+        <div class="search-form">
+            <form th:action="@{/view_books}" method="get">
+                <label>
+                    <input type="text" name="search" placeholder="Search books by title" th:value="${searchQuery}">
+                </label>
+                <button type="submit">Search</button>
+            </form>
+        </div>
+        <!-- Only one set of buttons -->
+        <div class="button-group">
+            <button type="button" class="delete-button" onclick="deleteBooks()">Delete Selected Books</button>
+            <a th:href="@{/library}" class="back-button">Back to Library</a>
+        </div>
+    </div>
+
+    <div class="flash-messages">
+        <div th:each="msg : ${messages}">
+            <div th:class="'alert ' + ${msg.category}">
+                <span th:text="${msg.text}"></span>
+            </div>
+        </div>
+    </div>
+
+    <form id="book-form" th:action="@{/delete_books}" method="post" onsubmit="deleteBooks(); return false;">
+        <table>
+            <thead>
+            <tr>
+                <th th:if="${isAdmin}">
+                    <label>
+                        <input type="checkbox" name="select_all" onclick="selectAll(this)">
+                    </label>
+                </th>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Image</th>
+                <th>Total Copies</th>
+                <th>Available Copies</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="book : ${books}">
+                <td th:if="${isAdmin}">
+                    <label>
+                        <input type="checkbox" name="book_ids" th:value="${book.id}">
+                    </label>
+                </td>
+                <td th:text="${book.id}">1</td>
+                <td th:text="${book.title}">Book Title</td>
+                <td th:text="${book.author}">Author</td>
+                <td>
+                    <img th:if="${book.image != null}" th:src="@{/images/{img}(img=${book.image})}" alt="Book Image"/>
+                    <span th:if="${book.image == null}" class="no-image">No image available</span>
+                </td>
+                <td th:text="${book.totalCopies}">10</td>
+                <td th:text="${book.availableCopies}">5</td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+</body>
+</html>

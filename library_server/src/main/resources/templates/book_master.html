@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Master</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #89f7fe, #66a6ff);
+            color: #333;
+        }
+
+        .book-master-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            font-size: 42px;
+            text-align: center;
+            color: #222;
+            margin-bottom: 30px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-bottom: 3px solid #00c6ff;
+            padding-bottom: 12px;
+        }
+
+        h2 {
+            font-size: 26px;
+            color: #555;
+            margin-bottom: 25px;
+            font-weight: 600;
+            text-align: left;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 8px;
+        }
+
+        /* Table Styling */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 800px;
+            border-collapse: collapse;
+            font-size: 18px;
+            background-color: #ffffff;
+        }
+
+        th, td {
+            padding: 18px;
+            text-align: left;
+            border-bottom: 1px solid #e3e3e3;
+        }
+
+        th {
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            color: #fff;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 15px;
+        }
+
+        tr:hover td {
+            background-color: #f0f8ff;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Back Button Styling */
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 14px 30px;
+            font-size: 18px;
+            font-weight: 500;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .back-link:hover {
+            background: linear-gradient(135deg, #0072ff, #0056b3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .book-master-container {
+                width: 95%;
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            h2 {
+                font-size: 22px;
+            }
+
+            th, td {
+                padding: 14px;
+                font-size: 16px;
+            }
+
+            table {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .book-master-container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+
+            .back-link {
+                padding: 12px 20px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="book-master-container">
+    <h1>Book Master</h1>
+    <h2>Book Roster</h2>
+
+    <!-- Table Wrapper -->
+    <div class="table-container">
+        <table class="book-master-table">
+            <thead>
+            <tr class="book-master-tr">
+                <th class="book-master-th">Title</th>
+                <th class="book-master-th">Author</th>
+                <th class="book-master-th">Total Copies</th>
+                <th class="book-master-th">Available Copies</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="book-master-tr" th:each="book : ${books}">
+                <td class="book-master-td" th:text="${book.title}">Title</td>
+                <td class="book-master-td" th:text="${book.author}">Author</td>
+                <td class="book-master-td" th:text="${book.totalCopies}">Total</td>
+                <td class="book-master-td" th:text="${book.availableCopies}">Available</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Back to Library Button -->
+    <a th:href="@{/library}" class="back-link">Back to Library</a>
+</div>
+</body>
+</html>

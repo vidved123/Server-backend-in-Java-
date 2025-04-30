@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base styles */
+        body {
+            font-family: Roboto, Arial, sans-serif;
+            background: linear-gradient(135deg, #ff6a00, #ffcc00); /* Vibrant Gradient Background */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 30px;
+            color: #ff5722; /* Vibrant Orange */
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        /* Form styling */
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="password"]:focus {
+            border-color: #ff5722; /* Vibrant Border on Focus */
+            outline: none;
+        }
+
+        /* Button Styles */
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff; /* Vibrant Blue */
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        /* Error message styling */
+        .message {
+            text-align: center;
+            margin-top: 15px;
+            color: red;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            color: red;
+        }
+
+        ul li {
+            margin: 5px 0;
+        }
+
+        /* Username suggestions box */
+        .suggestions {
+            border: 1px solid #ddd;
+            border-top: none;
+            max-height: 150px;
+            overflow-y: auto;
+            position: absolute;
+            background: #fff;
+            width: 100%;
+            z-index: 1000;
+            top: 100%;
+            left: 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .suggestion-item {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .suggestion-item:hover {
+            background: #f0f0f0;
+        }
+
+        /* Forgot password link */
+        .forgot-password {
+            display: block;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .forgot-password:hover {
+            color: #0056b3;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            .form-group input[type="text"],
+            .form-group input[type="password"],
+            button {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Login</h2>
+
+    <!-- Login form -->
+    <form th:action="@{/login}" method="post">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <!-- Username input -->
+            <input type="text" name="username" id="username" required>
+            <div id="suggestions" class="suggestions"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <!-- Password input -->
+            <input type="password" name="password" id="password" required>
+        </div>
+
+        <button type="submit">Login</button>
+        <a th:href="@{/forgot-password}" class="forgot-password">Forgot your password?</a>
+
+        <!-- Error message display -->
+        <ul th:if="${param.error}">
+            <li>Invalid username or password.</li>
+        </ul>
+    </form>
+</div>
+
+<script>
+    // Username suggestions fetching logic
+    document.getElementById('username').addEventListener('input', function () {
+        const query = this.value;
+        if (query.length < 2) {
+            document.getElementById('suggestions').innerHTML = '';
+            return;
+        }
+
+        // Fetch username suggestions from the server
+        fetch(`/api/usernames?query=${query}`)
+            .then(response => response.json())
+            .then(usernames => {
+                const suggestionsBox = document.getElementById('suggestions');
+                suggestionsBox.innerHTML = '';
+                usernames.forEach(username => {
+                    const div = document.createElement('div');
+                    div.className = 'suggestion-item';
+                    div.textContent = username;
+                    div.onclick = () => {
+                        document.getElementById('username').value = username;
+                        suggestionsBox.innerHTML = '';
+                    };
+                    suggestionsBox.appendChild(div);
+                });
+            })
+            .catch(error => console.error('Error fetching suggestions:', error));
+    });
+</script>
+
+</body>
+</html>

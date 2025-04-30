@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <style>
+        body {
+            font-family: Roboto, sans-serif;
+            background: linear-gradient(135deg, #FF6F61, #FFB347);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        .profile-container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 30px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+            border-top: 6px solid #FF6F61;
+            animation: fadeIn 0.5s ease-in-out;
+            box-sizing: border-box;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            color: #FF6F61;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            background-color: #f9f9f9;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #FF6F61;
+            background-color: #fff;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            background-color: #FF6F61;
+            color: #fff;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #FF4B3A;
+            transform: scale(1.05);
+        }
+
+        .confirmation-button {
+            background-color: #DC3545;
+            margin-top: 20px;
+        }
+
+        .confirmation-button:hover {
+            background-color: #C82333;
+        }
+
+        .back-button {
+            display: block;
+            background-color: #6C757D;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #5A6268;
+        }
+
+        @media (max-width: 600px) {
+            .profile-container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            button,
+            .back-button {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="profile-container">
+    <h1>Your Profile</h1>
+
+    <div th:if="${success}" style="color: green; text-align: center; margin-bottom: 15px;">
+        <p th:text="${success}"></p>
+    </div>
+
+    <div th:if="${error}" style="color: red; text-align: center; margin-bottom: 15px;">
+        <p th:text="${error}"></p>
+    </div>
+
+    <!-- Update Profile Form -->
+    <form th:action="@{/update_profile}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+        <input type="hidden" name="id" th:value="${user.id}" />
+
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" th:value="${user.username}" readonly />
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" th:value="${user.email}" required />
+        </div>
+
+        <div class="form-group">
+            <label for="fullName">Full Name:</label>
+            <input type="text" id="fullName" name="fullName" th:value="${user.fullName}" required />
+        </div>
+
+        <div class="form-group">
+            <label for="sex">Gender:</label>
+            <select id="sex" name="sex" required>
+                <option value="MALE" th:selected="${user.sex == T(org.library.entity.enums.Sex).MALE}">Male</option>
+                <option value="FEMALE" th:selected="${user.sex == T(org.library.entity.enums.Sex).FEMALE}">Female</option>
+                <option value="OTHER" th:selected="${user.sex == T(org.library.entity.enums.Sex).OTHER}">Other</option>
+            </select>
+
+        </div>
+
+        <div class="form-group">
+            <label for="mobileNumber">Mobile Number:</label>
+            <input type="text" id="mobileNumber" name="mobileNumber" th:value="${user.mobileNumber}" required />
+        </div>
+
+        <div class="form-group">
+            <label for="countryCode">Country Code:</label>
+            <input type="text" id="countryCode" name="countryCode" th:value="${user.countryCode}" required />
+        </div>
+
+        <button type="submit">Update Profile</button>
+    </form>
+
+    <!-- Delete Profile Form -->
+    <form th:action="@{/delete_profile}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <input type="hidden" name="user_id" th:value="${user.id}" />
+        <button type="submit" class="confirmation-button"
+                onclick="return confirm('Are you sure you want to delete your profile?');">Delete Profile</button>
+    </form>
+
+    <a th:href="@{/dashboard}" class="back-button">Back to Dashboard</a>
+</div>
+</body>
+</html>

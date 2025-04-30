@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add User - Thymeleaf</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Google Font */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #c9d6ff, #e2e2e2);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+            width: 100%;
+            max-width: 600px;
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        label {
+            font-size: 15px;
+            font-weight: 500;
+            color: #444;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        input[type="tel"],
+        select {
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: #f7f9fc;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #6a11cb;
+            box-shadow: 0 0 6px rgba(106, 17, 203, 0.3);
+            outline: none;
+        }
+
+        input[type="radio"] {
+            margin-right: 8px;
+        }
+
+        /* Radio Group Style */
+        label input[type="radio"] + span {
+            font-weight: normal;
+        }
+
+        /* Button Styling */
+        button {
+            padding: 14px;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #5a01b3, #1e60e6);
+            transform: scale(1.03);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        /* Flash Message */
+        .message {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .success {
+            background-color: #d1f4d7;
+            color: #2e7d32;
+            border: 1px solid #a5d6a7;
+        }
+
+        .danger {
+            background-color: #fdecea;
+            color: #c0392b;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Back Button */
+        .back-button {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .back-button a {
+            font-size: 16px;
+            color: #6a11cb;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .back-button a:hover {
+            color: #4d0fa0;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            input,
+            select,
+            button {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Add User</h1>
+
+    <!-- Flash message -->
+    <div th:if="${message}">
+        <p th:text="${message}" class="message"></p>
+    </div>
+
+    <!-- Form bound to 'user' object -->
+    <form th:action="@{/add_user}" method="post" th:object="${user}">
+        <label for="fullName">Full Name:</label>
+        <input type="text" id="fullName" th:field="*{fullName}" required>
+
+        <label for="username">Username:</label>
+        <input type="text" id="username" th:field="*{username}" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" th:field="*{email}" required>
+
+        <label for="mobileNumber">Phone Number:</label>
+        <input type="tel" id="mobileNumber" th:field="*{mobileNumber}" required>
+
+        <label for="countryCode">Country Code:</label>
+        <input type="text" id="countryCode" th:field="*{countryCode}" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" th:field="*{password}" required>
+
+        <label for="role">Role:</label>
+        <select id="role" th:field="*{role}">
+            <option value="USER">User</option>
+            <option value="ADMIN">Admin</option>
+        </select>
+
+        <label>Sex:</label>
+        <label><input type="radio" name="sex" value="MALE" th:field="*{sex}"><span> Male</span></label>
+        <label><input type="radio" name="sex" value="FEMALE" th:field="*{sex}"><span> Female</span></label>
+        <label><input type="radio" name="sex" value="OTHER" th:field="*{sex}"><span> Other</span></label>
+
+        <button type="submit">Add User</button>
+    </form>
+
+    <div class="back-button">
+        <a th:href="@{/library}">Back to Dashboard</a>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,84 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.4.4'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'library.org'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // ✅ Spring Boot Starters
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+    // ✅ Thymeleaf Java 8 Time Support (fixes #dates.format(LocalDate))
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE'
+
+    // ✅ JWT for Token Handling
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    // ✅ Jakarta Servlet
+    implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+
+    // ✅ Spring Security Crypto + Bouncy Castle
+    implementation 'org.springframework.security:spring-security-crypto:6.4.4'
+    implementation 'org.bouncycastle:bcprov-jdk18on:1.78'
+
+    // ✅ Resilience4j Rate Limiting
+    implementation 'io.github.resilience4j:resilience4j-core:2.2.0'
+    implementation 'io.github.resilience4j:resilience4j-ratelimiter:2.2.0'
+    implementation 'io.github.resilience4j:resilience4j-spring-boot3:2.2.0'
+
+    // ✅ Apache POI (secure versions)
+    implementation 'org.apache.poi:poi:5.2.5'
+    implementation 'org.apache.poi:poi-ooxml:5.4.0'
+
+    // ✅ Patch transitive vulnerabilities
+    implementation 'commons-io:commons-io:2.15.1'
+    implementation 'org.apache.commons:commons-compress:1.26.1'
+
+    // ✅ MySQL JDBC Driver
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    // ✅ Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    // ✅ Dev Tools for Hot Reload
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // ✅ Spring Config Processor
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    // ✅ Spring Boot Testing + JUnit 5
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // ✅ Spring Boot Actuator (Optional, if you're using health checks)
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+    }
+}
