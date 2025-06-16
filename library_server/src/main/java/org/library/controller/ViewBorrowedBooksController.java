@@ -1,6 +1,6 @@
 package org.library.controller;
 
-import org.library.dto.ViewBorrrowedBooksdto;
+import org.library.dto.ViewBorrowedBooksdto;
 import org.library.entity.enums.Role;
 import org.library.service.ViewBorrowedBooksService;
 import org.library.service.UserService;
@@ -55,7 +55,7 @@ public class ViewBorrowedBooksController {
             return "view_borrowed_books";
         }
 
-        List<ViewBorrrowedBooksdto> borrowedBooks;
+        List<ViewBorrowedBooksdto> borrowedBooks;
 
         // Search functionality: If there's a search query, filter the books
         if (searchQuery != null && !searchQuery.trim().isEmpty()) {
