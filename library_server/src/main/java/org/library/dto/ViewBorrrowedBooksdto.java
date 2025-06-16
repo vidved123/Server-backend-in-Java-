@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class ViewBorrrowedBooksdto {
+public class ViewBorrowedBooksdto {
     private Long bookId;
     private String title;
     private String author;
