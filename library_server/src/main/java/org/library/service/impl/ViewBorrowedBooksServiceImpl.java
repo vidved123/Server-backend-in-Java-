@@ -1,6 +1,6 @@
 package org.library.service.impl;
 
-import org.library.dto.ViewBorrrowedBooksdto;
+import org.library.dto.ViewBorrowedBooksdto;
 import org.library.entity.BorrowedBook;
 import org.library.entity.enums.Role;
 import org.library.repository.BorrowedBookRepository;
@@ -19,7 +19,7 @@ public class ViewBorrowedBooksServiceImpl implements ViewBorrowedBooksService {
     private BorrowedBookRepository borrowedBookRepository;
 
     @Override
-    public List<ViewBorrrowedBooksdto> getBorrowedBooks(Long userId, String role) {
+    public List<ViewBorrowedBooksdto> getBorrowedBooks(Long userId, String role) {
         try {
             Role roleEnum = Role.valueOf(role.toUpperCase());
             List<BorrowedBook> borrowedBooks;
@@ -45,12 +45,12 @@ public class ViewBorrowedBooksServiceImpl implements ViewBorrowedBooksService {
     }
 
     @Override
-    public List<ViewBorrrowedBooksdto> searchBorrowedBooksByUserId(Long userId) {
+    public List<ViewBorrowedBooksdto> searchBorrowedBooksByUserId(Long userId) {
         return List.of();  // Empty list for now, can be implemented as needed
     }
 
     @Override
-    public List<ViewBorrrowedBooksdto> searchBorrowedBooks(String searchQuery, Long userId, String role) {
+    public List<ViewBorrowedBooksdto> searchBorrowedBooks(String searchQuery, Long userId, String role) {
         Role roleEnum = Role.valueOf(role.toUpperCase());
         List<BorrowedBook> borrowedBooks;
 
@@ -75,8 +75,8 @@ public class ViewBorrowedBooksServiceImpl implements ViewBorrowedBooksService {
                 .collect(Collectors.toList());
     }
 
-    private ViewBorrrowedBooksdto convertToDto(BorrowedBook borrowedBook) {
-        ViewBorrrowedBooksdto dto = new ViewBorrrowedBooksdto();
+    private ViewBorrowedBooksdto convertToDto(BorrowedBook borrowedBook) {
+        ViewBorrowedBooksdto dto = new ViewBorrowedBooksdto();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         // Set book details
