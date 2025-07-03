@@ -1,0 +1,113 @@
+/* Base Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  font-size: 18px;
+  background: linear-gradient(135deg, #ff7e5f, #feb47b);
+  color: #fff;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  color: black;
+  font-size: 2.8rem;
+  margin: 50px 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+p, a {
+  font-size: 1.125rem;
+  color: black;
+}
+
+a {
+  text-decoration: none;
+  margin: 0 15px;
+  color: black;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Navigation Buttons */
+.nav-buttons {
+  margin-top: 30px;
+}
+
+.nav-buttons a {
+  display: inline-block;
+  padding: 12px 25px;
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  margin: 0 10px;
+  font-size: 1.125rem;
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.nav-buttons a:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
+
+/* Main Container */
+.container {
+  margin: 20px auto;
+  max-width: 900px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
+}
+
+.welcome-text {
+  margin: 20px 0;
+  font-size: 1.25rem;
+  color: black;
+}
+
+.button {
+  display: inline-block;
+  padding: 12px 30px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  margin: 15px;
+  font-size: 1.125rem;
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  body {
+    font-size: 16px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  p, a {
+    font-size: 1rem;
+  }
+
+  .nav-buttons a {
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
+
+  .button {
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
+}

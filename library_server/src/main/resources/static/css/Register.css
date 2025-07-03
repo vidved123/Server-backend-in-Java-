@@ -1,0 +1,110 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #FF6F61, #FFB347);
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+    min-height: 100vh;
+    overflow-y: auto;
+    margin: 0;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 700px;
+    text-align: left;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+h2 {
+    grid-column: span 2;
+    margin: 0 0 20px 0;
+    color: #FF6F61;
+    font-size: 24px;
+}
+
+label {
+    margin-bottom: 8px;
+    color: #333;
+    font-size: 14px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="tel"],
+select {
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 14px;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+select:focus {
+    border-color: #FF6F61;
+    background-color: #f9f9f9;
+    outline: none;
+}
+
+input[type="submit"] {
+    padding: 12px 25px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 15px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    grid-column: span 2;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+ul#error-list,
+.flashes {
+    list-style-type: none;
+    padding: 0;
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 20px;
+    grid-column: span 2;
+}
+
+ul#error-list li,
+.flashes li {
+    margin: 8px 0;
+}
+
+@media (max-width: 600px) {
+    .container {
+        grid-template-columns: 1fr;
+        padding: 15px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    input[type="submit"] {
+        font-size: 16px;
+    }
+}

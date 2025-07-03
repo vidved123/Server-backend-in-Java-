@@ -1,0 +1,153 @@
+/* Base Styles */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ff6a00, #ffcc00);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    color: #333;
+}
+
+header {
+    background: #d9534f;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+h1 {
+    margin: 0;
+    font-size: 2.8em;
+}
+
+h2 {
+    color: #d9534f;
+    border-bottom: 2px solid #d9534f;
+    padding-bottom: 10px;
+    margin-top: 40px;
+    text-align: center;
+}
+
+p {
+    text-align: center;
+    font-size: 1.2em;
+    color: #444;
+}
+
+/* Table Styles */
+table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #5bc0de;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f1f1f1;
+}
+
+tr:hover {
+    background-color: #e9ecef;
+}
+
+/* Overdue Table */
+.overdue-table thead {
+    background-color: #ff5722;
+}
+
+.overdue-table th {
+    color: white;
+}
+
+/* Action Buttons Styles */
+.action-buttons {
+    text-align: center;
+    margin: 40px 0;
+}
+
+.action-buttons a {
+    display: inline-block;
+    padding: 12px 25px;
+    margin: 5px;
+    color: #fff;
+    background-color: #28a745;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.action-buttons a:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}
+
+/* Flex layout for Admin Buttons */
+.admin-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin: 40px 0;
+}
+
+.admin-buttons a {
+    width: 250px;
+    padding: 12px 25px;
+    color: #fff;
+    background-color: #007bff;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.admin-buttons a:hover {
+    background-color: #0056b3;
+}
+
+/* Footer Styles */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: white;
+    color: white; /* Note: white on white - might not be visible. Consider changing this. */
+    margin-top: 40px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    table {
+        width: 100%;
+    }
+
+    .action-buttons a {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    h2 {
+        font-size: 1.5em;
+    }
+}

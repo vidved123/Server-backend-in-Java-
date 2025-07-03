@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800&display=swap');
+
+/* General Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(to right, #e0f7fa, #e1bee7);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+h1 {
+    color: #4a148c;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.book-list-container {
+    background-color: #ffffff;
+    padding: 25px 30px;
+    margin: 40px;
+    border-radius: 16px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 850px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    background: linear-gradient(135deg, #fce4ec, #f3e5f5);
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+li:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+li span {
+    font-size: 18px;
+    color: #4a148c;
+    font-weight: 500;
+}
+
+a {
+    text-decoration: none;
+    color: #fff;
+    padding: 10px 22px;
+    background: linear-gradient(135deg, #7b1fa2, #512da8);
+    border-radius: 8px;
+    transition: background-color 0.3s;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+a:hover {
+    background: linear-gradient(135deg, #5e35b1, #4527a0);
+}
+
+p {
+    color: #d50000;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 17px;
+}
+
+/* Book Cover Styling */
+.book-cover {
+    height: 70px;
+    width: 55px;
+    margin-right: 18px;
+    border-radius: 6px;
+    object-fit: cover;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.book-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.book-title {
+    font-weight: 700;
+    font-size: 18px;
+    color: #311b92;
+}
+
+.book-author {
+    font-style: italic;
+    font-size: 16px;
+    color: #6a1b9a;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .book-list-container {
+        margin: 20px;
+        padding: 20px;
+    }
+
+    li {
+        padding: 16px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    a {
+        margin-top: 10px;
+        font-size: 15px;
+        padding: 8px 18px;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    .book-info {
+        flex-direction: row;
+    }
+}

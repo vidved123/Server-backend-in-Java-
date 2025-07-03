@@ -1,0 +1,170 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to right, #dbeafe, #f0f4ff);
+    color: #2c3e50;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 30px auto;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+    border: 1px solid #cbd5e1;
+}
+
+h1 {
+    font-size: 36px;
+    color: #4c51bf;
+    margin-bottom: 20px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.search-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    width: 100%;
+}
+
+.search-form {
+    display: flex;
+    gap: 10px;
+    flex: 1;
+}
+
+.search-form input {
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    flex-grow: 1;
+    min-width: 200px;
+}
+
+.search-form button {
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+    background-color: #5a67d8;
+    color: white;
+    cursor: pointer;
+    width: auto;
+}
+
+.search-form button:hover {
+    background-color: #434190;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.back-link, .delete-btn {
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    text-align: center;
+}
+
+.back-link {
+    background-color: #5a67d8;
+    color: white;
+}
+
+.back-link:hover {
+    background-color: #434190;
+}
+
+.delete-btn {
+    background-color: #e53e3e;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background-color: #c53030;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+th, td {
+    padding: 15px;
+    border: 1px solid #e2e8f0;
+    text-align: left;
+}
+
+th {
+    background-color: #667eea;
+    color: #ffffff;
+}
+
+tr:nth-child(even) {
+    background-color: #edf2f7;
+}
+
+tr:hover {
+    background-color: #e0e7ff;
+}
+
+button:disabled {
+    background-color: #a0aec0;
+    cursor: not-allowed;
+}
+
+.flash-messages {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.flash-messages.info {
+    background-color: #d1fae5;
+    color: #065f46;
+    border: 1px solid #10b981;
+}
+
+.flash-messages.error {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #f87171;
+}
+
+@media (max-width: 768px) {
+    .search-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-form,
+    .action-buttons {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .search-form input,
+    .search-form button,
+    .back-link,
+    .delete-btn {
+        width: 100%;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+}
