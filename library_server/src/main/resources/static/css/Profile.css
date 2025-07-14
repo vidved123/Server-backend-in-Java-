@@ -1,37 +1,75 @@
 body {
-    font-family: sans-serif;
-    background: linear-gradient(135deg, #FF6F61, #FFB347);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    color: #333;
+    min-height: 100vh;
+    color: #fff;
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
 }
 
 .profile-container {
-    background-color: #ffffff;
-    border-radius: 12px;
-    padding: 30px;
+    background: rgba(255, 255, 255, 0.13);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 40px 32px;
     width: 100%;
-    max-width: 600px;
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
-    border-top: 6px solid #FF6F61;
-    animation: fadeIn 0.5s ease-in-out;
+    max-width: 500px;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37), 0 4px 16px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin: 48px auto;
+    position: relative;
+    z-index: 1;
+    animation: fadeIn 0.8s ease-in-out;
     box-sizing: border-box;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 h1 {
     text-align: center;
-    font-size: 28px;
-    color: #FF6F61;
-    margin-bottom: 20px;
+    font-size: 2.4em;
+    font-weight: 700;
+    margin-bottom: 24px;
+    letter-spacing: 1px;
+    background: linear-gradient(90deg, #f9d423, #a1c4fd, #c2e9fb, #f9d423);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 2px 8px rgba(161,196,253,0.10);
+    position: relative;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 2px;
 }
 
 .form-group {
@@ -42,78 +80,90 @@ h1 {
     display: block;
     margin-bottom: 5px;
     font-size: 14px;
-    color: #666;
+    color: #fff;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .form-group input,
 .form-group select {
     width: 100%;
     padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 14px;
-    background-color: #f9f9f9;
-    transition: border-color 0.3s ease;
+    border: 1.5px solid #a1c4fd;
+    border-radius: 8px;
+    font-size: 1em;
+    background: rgba(255,255,255,0.18);
+    color: #222;
+    transition: border-color 0.3s, background 0.3s;
     box-sizing: border-box;
 }
 
 .form-group input:focus,
 .form-group select:focus {
-    border-color: #FF6F61;
-    background-color: #fff;
+    border-color: #764ba2;
+    background: #fff;
     outline: none;
 }
 
-button {
+button, .confirmation-button, .back-button {
     width: 100%;
-    background-color: #FF6F61;
     color: #fff;
-    padding: 12px;
+    padding: 14px;
     border: none;
-    border-radius: 6px;
-    font-size: 14px;
+    border-radius: 12px;
+    font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.18);
+    transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+    backdrop-filter: blur(10px);
+    margin-top: 18px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-button:hover {
-    background-color: #FF4B3A;
-    transform: scale(1.05);
+button:hover, .confirmation-button:hover, .back-button:hover {
+    background: linear-gradient(135deg, #764ba2, #667eea);
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.28);
 }
 
 .confirmation-button {
-    background-color: #DC3545;
-    margin-top: 20px;
+    background: linear-gradient(135deg, #ff9800, #ff5e62);
+    box-shadow: 0 4px 15px rgba(255, 152, 0, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .confirmation-button:hover {
-    background-color: #C82333;
+    background: linear-gradient(135deg, #ff5e62, #ff9800);
+    box-shadow: 0 8px 25px rgba(255, 94, 98, 0.28);
 }
 
 .back-button {
-    display: block;
-    background-color: #6C757D;
-    color: #fff;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 6px;
-    font-size: 14px;
-    margin-top: 20px;
-    transition: background-color 0.3s ease;
+    background: linear-gradient(135deg, #5bc0de, #46b8da);
+    box-shadow: 0 4px 15px rgba(91, 192, 222, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .back-button:hover {
-    background-color: #5A6268;
+    background: linear-gradient(135deg, #46b8da, #5bc0de);
+    box-shadow: 0 8px 25px rgba(91, 192, 222, 0.28);
 }
 
 @media (max-width: 600px) {
     .profile-container {
-        padding: 20px;
+        padding: 20px 8px;
+        margin: 24px auto;
     }
 
     h1 {
-        font-size: 24px;
+        font-size: 1.4em;
     }
 
     button,
