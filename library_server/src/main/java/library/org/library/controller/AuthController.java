@@ -1,21 +1,22 @@
 package org.library.controller;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import org.library.dto.LoginRequest;
 import org.library.entity.User;
 import org.library.service.AuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class AuthController {
@@ -66,22 +67,33 @@ public class AuthController {
 
         try {
             String token = authService.loginUser(request.getUsername(), request.getPassword());
+            logger.debug("🔍 AuthController - Generated JWT token: {}", token != null ? "TOKEN_PRESENT" : "NO_TOKEN");
 
             Cookie tokenCookie = new Cookie("token", token);
             tokenCookie.setHttpOnly(true);
             tokenCookie.setPath("/");
             tokenCookie.setMaxAge(24 * 60 * 60); // 1 day
 
-            // Use HTTPS conditionally
             boolean isSecure = isSecureRequest(httpRequest);
             tokenCookie.setSecure(isSecure);
+            String serverName = httpRequest.getServerName();
             if (isSecure) {
                 tokenCookie.setAttribute("SameSite", "None");
+            } else {
+                // Always set SameSite=Lax for localhost/127.0.0.1
+                if ("localhost".equals(serverName) || "127.0.0.1".equals(serverName)) {
+                    tokenCookie.setAttribute("SameSite", "Lax");
+                }
             }
+
+            logger.debug("🔍 AuthController - Setting cookie - Name: {}, Value: {}, Secure: {}, Path: {}", 
+                       tokenCookie.getName(), tokenCookie.getValue() != null ? "VALUE_PRESENT" : "NULL", 
+                       tokenCookie.getSecure(), tokenCookie.getPath());
 
             response.addCookie(tokenCookie);
 
             redirectAttributes.addFlashAttribute("successMessage", "Login successful!");
+            logger.info("🔍 AuthController - Login successful, redirecting to dashboard");
             return "redirect:/dashboard";
         } catch (Exception e) {
             logger.error("Login failed for user: {}", request.getUsername(), e);
@@ -124,6 +136,9 @@ public class AuthController {
     private boolean isSecureRequest(HttpServletRequest request) {
         String scheme = request.getScheme();
         String serverName = request.getServerName();
-        return scheme.equalsIgnoreCase("https") && !serverName.contains("localhost");
+        // Allow HTTP for localhost/127.0.0.1 development
+        return scheme.equalsIgnoreCase("https") && 
+               !serverName.contains("localhost") && 
+               !serverName.contains("127.0.0.1");
     }
 }
