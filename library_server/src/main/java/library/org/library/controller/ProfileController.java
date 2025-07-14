@@ -1,19 +1,21 @@
 package org.library.controller;
 
+import java.util.Optional;
+
 import org.library.entity.User;
 import org.library.entity.enums.Sex;
 import org.library.exception.UserNotFoundException;
 import org.library.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Optional;
 
 @Controller
 public class ProfileController {
@@ -23,11 +25,11 @@ public class ProfileController {
 
     // ✅ Show profile page
     @GetMapping("/profile")
-    public String viewProfile(@AuthenticationPrincipal UserDetails currentUser,
+    public String viewProfile(Authentication authentication,
                               Model model,
                               HttpServletResponse response) {
 
-        if (currentUser == null) {
+        if (authentication == null || authentication.getName() == null) {
             return "redirect:/login";
         }
 
@@ -37,9 +39,9 @@ public class ProfileController {
         response.setDateHeader("Expires", 0);
 
         // Retrieve user and throw exception if not found
-        Optional<User> userOptional = userService.findByUsername(currentUser.getUsername());
+        Optional<User> userOptional = userService.findByUsername(authentication.getName());
         if (userOptional.isEmpty()) {
-            throw new UserNotFoundException("User not found with username: " + currentUser.getUsername());
+            throw new UserNotFoundException("User not found with username: " + authentication.getName());
         }
 
         model.addAttribute("user", userOptional.get());
@@ -48,7 +50,7 @@ public class ProfileController {
 
     // ✅ Handle profile update
     @PostMapping("/update_profile")
-    public String updateProfile(@AuthenticationPrincipal UserDetails currentUser,
+    public String updateProfile(Authentication authentication,
                                 @RequestParam String fullName,
                                 @RequestParam String sex,
                                 @RequestParam String mobileNumber,
@@ -57,8 +59,12 @@ public class ProfileController {
                                 RedirectAttributes redirectAttributes,
                                 Model model) {
 
+        if (authentication == null || authentication.getName() == null) {
+            return "redirect:/login";
+        }
+
         // Retrieve user and throw exception if not found
-        Optional<User> userOptional = userService.findByUsername(currentUser.getUsername());
+        Optional<User> userOptional = userService.findByUsername(authentication.getName());
         if (userOptional.isEmpty()) {
             return "redirect:/login"; // You may redirect to log in if user is not found
         }
