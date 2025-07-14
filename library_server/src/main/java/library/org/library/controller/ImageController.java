@@ -1,5 +1,11 @@
 package org.library.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -9,19 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.UUID;
-
 @RestController
 @RequestMapping("/api/images")
 public class ImageController {
 
-    // Store images in a platform-independent directory under the application's root
-    private static final String UPLOAD_DIR = "uploads/images/";
+    // Store images in the static images directory so they are accessible via /images/
+    private static final String UPLOAD_DIR = "src/main/resources/static/images/";
 
     // ✅ Upload Image API
     @PostMapping("/upload")
