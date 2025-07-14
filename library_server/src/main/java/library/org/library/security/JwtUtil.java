@@ -30,15 +30,27 @@ public class JwtUtil {
 
         this.algorithm = Algorithm.HMAC256(secret);
         this.EXPIRATION_TIME_MS = expirationTimeMs;
+
+        // Log the secret (first and last 4 chars only) and expiration for debugging
+        String masked = secret.substring(0, 4) + "..." + secret.substring(secret.length() - 4);
+        logger.info("[DEBUG] JWT Secret in use: {} (length: {})", masked, secret.length());
+        logger.info("[DEBUG] JWT Expiration (ms): {}", expirationTimeMs);
     }
 
     public String generateToken(String username, String role) {
-        return JWT.create()
+        logger.debug("🔍 JwtUtil - Generating token for username: {}, role: {}", username, role);
+        
+        String token = JWT.create()
                 .withSubject(username)
                 .withClaim("role", role)
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME_MS))
                 .sign(algorithm);
+        
+        logger.debug("🔍 JwtUtil - Generated token: {}", token != null ? "TOKEN_PRESENT" : "NO_TOKEN");
+        logger.debug("🔍 JwtUtil - Token length: {}", token != null ? token.length() : 0);
+        
+        return token;
     }
 
     public String extractUsername(String token) {
@@ -84,7 +96,7 @@ public class JwtUtil {
         }
     }
 
-    private DecodedJWT decodeToken(String token) throws JWTVerificationException {
+    public DecodedJWT decodeToken(String token) throws JWTVerificationException {
         JWTVerifier verifier = JWT.require(algorithm).build();
         return verifier.verify(token);
     }
