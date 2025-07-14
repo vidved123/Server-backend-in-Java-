@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Master</title>
+  <link rel="stylesheet" th:href="@{/css/BookMaster.css}">
+</head>
+
+<body>
+<div class="book-master-container">
+  <h1>Book Master</h1>
+  <h2>Book Roster</h2>
+
+  <!-- Table Wrapper -->
+  <div class="table-container">
+    <table class="book-master-table">
+      <thead>
+      <tr class="book-master-tr">
+        <th class="book-master-th">Title</th>
+        <th class="book-master-th">Author</th>
+        <th class="book-master-th">Total Copies</th>
+        <th class="book-master-th">Available Copies</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- Thymeleaf Dynamic Book List -->
+      <tr th:each="book : ${books}" class="book-master-tr">
+        <td class="book-master-td" th:text="${book.title}">Book Title</td>
+        <td class="book-master-td" th:text="${book.author}">Author Name</td>
+        <td class="book-master-td" th:text="${book.totalCopies}">0</td>
+        <td class="book-master-td" th:text="${book.availableCopies}">0</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div th:if="${success}" class="flash-message success" th:text="${success}"></div>
+
+  <!-- Back to Library Button -->
+  <a th:href="@{/library}" class="back-link">Back to Library</a>
+</div>
+</body>
+</html>

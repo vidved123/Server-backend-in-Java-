@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Users Roster</title>
+  <link rel="stylesheet" th:href="@{/css/UsersRoster.css}">
+</head>
+<body>
+<h1>Users Roster</h1>
+
+<table id="usersTable">
+  <thead>
+  <tr>
+    <th>User ID</th>
+    <th>Username</th>
+    <th>Full Name</th>
+    <th>Email</th>
+    <th>Phone</th>
+    <th>Country Code</th>
+    <th>Role</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="user : ${users}">
+    <td th:text="${user.id}">1</td>
+    <td th:text="${user.username}">johndoe</td>
+    <td th:text="${user.fullName}">John Doe</td>
+    <td th:text="${user.email}">john@example.com</td>
+    <td th:text="${user.mobileNumber}">1234567890</td>
+    <td th:text="${user.countryCode}">+91</td>
+    <td th:text="${user.role}">ADMIN</td>
+  </tr>
+  </tbody>
+</table>
+
+<a th:href="@{/dashboard}" class="button">Back to Dashboard</a>
+</body>
+</html>

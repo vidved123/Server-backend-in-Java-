@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add User</title>
+  <link rel="stylesheet" th:href="@{/css/AddUser.css}" href="/css/AddUser.css"/>
+</head>
+
+<body>
+<div class="container">
+  <h1>Add User</h1>
+
+  <!-- Flash messages -->
+  <div th:if="${successMessage}" class="flash-messages success">
+    <p th:text="${successMessage}"></p>
+  </div>
+  <div th:if="${errorMessage}" class="flash-messages error">
+    <p th:text="${errorMessage}"></p>
+  </div>
+
+  <!-- Thymeleaf form binding -->
+  <form th:action="@{/add_user}" th:object="${user}" method="post">
+
+    <label for="fullName">Full Name:</label>
+    <input type="text" th:field="*{fullName}" id="fullName" required />
+
+    <label for="username">Username:</label>
+    <input type="text" th:field="*{username}" id="username" required />
+
+    <label for="email">Email:</label>
+    <input type="email" th:field="*{email}" id="email" required />
+
+    <label for="mobileNumber">Phone Number:</label>
+    <input type="tel" th:field="*{mobileNumber}" id="mobileNumber" required />
+
+    <label for="countryCode">Country Code:</label>
+    <input type="text" th:field="*{countryCode}" id="countryCode" required />
+
+    <label for="password">Password:</label>
+    <input type="password" th:field="*{password}" id="password" required />
+
+    <label for="confirmPassword">Confirm Password:</label>
+    <input type="password" th:field="*{confirmPassword}" id="confirmPassword" required />
+
+    <label for="role">Role:</label>
+    <select th:field="*{role}" id="role">
+      <option value="USER">User</option>
+      <option value="ADMIN">Admin</option>
+    </select>
+
+    <label>Sex:</label>
+    <label><input type="radio" th:field="*{sex}" value="MALE" /> Male</label>
+    <label><input type="radio" th:field="*{sex}" value="FEMALE" /> Female</label>
+    <label><input type="radio" th:field="*{sex}" value="OTHER" /> Other</label>
+
+    <button type="submit">ADD USER</button>
+  </form>
+
+  <!-- Back button -->
+  <div class="back-button">
+    <a th:href="@{/dashboard}" class="back-link">BACK TO DASHBOARD</a>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Return Books</title>
+  <link rel="stylesheet" th:href="@{/css/ReturnBooks.css}">
+</head>
+<body>
+<div class="container">
+  <h1>Return Books</h1>
+
+  <!-- Search Bar for Admins -->
+  <form th:action="@{/return_books}" method="get" style="margin-bottom: 30px;">
+    <label>
+      <input type="number"
+             name="userId"
+             placeholder="Search by User ID"
+             id="userIdInput"
+             style="padding: 10px; font-size: 16px; width: 200px; margin-right: 10px;"/>
+    </label>
+    <button type="submit" style="padding: 10px 20px;">Search</button>
+  </form>
+
+  <!-- Flash Messages -->
+  <div th:if="${successMessage}" class="flash-messages" th:text="${successMessage}"></div>
+  <div th:if="${errorMessage}" class="flash-messages error" th:text="${errorMessage}"></div>
+
+  <!-- Return Books Form -->
+  <form th:action="@{/return_books}" method="post">
+    <table>
+      <thead>
+      <tr>
+        <th>Select</th>
+        <th>Book ID</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Borrowed Date</th>
+        <th>Due Date</th>
+        <th th:if="${isAdmin}">Username</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="book : ${borrowedBooks}">
+        <td>
+          <label>
+            <input th:if="${role.name() == 'ADMIN'}" type="checkbox" name="bookIdsAndUserIds" th:value="${book.bookId + ':' + book.userId}" />
+            <input th:if="${role.name() != 'ADMIN'}" type="checkbox" name="bookIds" th:value="${book.bookId}" />
+          </label>
+        </td>
+        <td th:text="${book.bookId}">1</td>
+        <td th:text="${book.title}">Sample Title</td>
+        <td th:text="${book.author}">Sample Author</td>
+        <td th:text="${book.borrowedDate}">2025-04-01</td>
+        <td th:text="${book.dueDate}">2025-05-01</td>
+        <td th:if="${isAdmin}" th:text="${book.username}">username</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <button type="submit">Return Selected Books</button>
+  </form>
+
+  <a th:href="@{/library}" class="back-to-library">Back to Library</a>
+</div>
+</body>
+</html>

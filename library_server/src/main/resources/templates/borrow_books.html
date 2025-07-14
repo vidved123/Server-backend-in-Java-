@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Borrow Books</title>
+  <link rel="stylesheet" th:href="@{/css/BorrowBooks.css}" />
+  <script th:src="@{/js/borrow.js}" defer></script>
+</head>
+<body>
+<div class="container">
+  <!-- Flash messages -->
+  <div th:if="${message}" class="flash-messages" th:text="${message}"></div>
+
+  <h1>Borrow a Book</h1>
+
+  <!-- Search form (admin user_id input and verify button inside) -->
+  <form th:action="@{/borrow}" method="get" class="search-form" id="searchForm">
+    <div th:if="${isAdmin}" class="form-group" id="admin-section">
+      <label for="user_id">Enter User ID (Admin Only):</label>
+      <div class="user-verification-container">
+        <input type="text" id="user_id" name="user_id" placeholder="Enter User ID" th:value="${verifiedUserId}" />
+        <button type="submit" id="verifyUserBtn" class="verify-btn" name="verify" value="1">VERIFY USER</button>
+      </div>
+      <div id="verificationStatus" class="verification-status"></div>
+    </div>
+    <input type="hidden" id="selectedBookIds" name="selectedBookIds" th:value="${selectedBookIds}" />
+    <label for="search"></label>
+    <input type="text" id="search" name="search" th:value="${searchQuery}" placeholder="Search by title, author, or book ID" />
+    <button type="submit" id="searchBtn">Search</button>
+  </form>
+
+  <div class="action-buttons">
+    <a th:href="@{/library}" class="back-link">Back to Library</a>
+  </div>
+
+  <!-- Borrow form -->
+  <form th:action="@{/borrow}" method="post" id="borrowForm">
+    <input type="hidden" name="user_id" th:value="${verifiedUserId}" />
+    <!-- Books table -->
+    <table>
+      <thead>
+      <tr>
+        <th>Select</th>
+        <th>Book ID</th>
+        <th>Image</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Total Copies</th>
+        <th>Available Copies</th>
+      </tr>
+      </thead>
+      <tbody>
+        <tr th:each="book : ${books}" th:if="${book.availableCopies > 0}">
+          <td>
+            <input type="checkbox" name="bookIds" th:value="${book.id}" th:id="${'book_' + book.id}" />
+          </td>
+          <td th:text="${book.id}"></td>
+          <td>
+            <img th:src="@{'/images/' + ${book.image}}" th:alt="${book.title}" width="50" />
+          </td>
+          <td th:text="${book.title}"></td>
+          <td th:text="${book.author}"></td>
+          <td th:text="${book.totalCopies}"></td>
+          <td th:text="${book.availableCopies}"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="borrow-info">
+      <p class="borrow-limit">📚 Borrow Limit: <span id="selectedCount">0</span>/3 books</p>
+      <p class="borrow-note">💡 You can borrow up to 3 books per session</p>
+    </div>
+    
+    <button type="submit" id="borrowBtn">BORROW SELECTED BOOKS</button>
+  </form>
+
+  <!-- Message if no books available -->
+  <p th:if="${books == null or #lists.isEmpty(books)}" class="no-books-message">
+    No books available for borrowing at the moment.
+  </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Error</title>
+  <link rel="stylesheet" th:href="@{/css/error.css}">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="error-container">
+  <h1>Error</h1>
+  <p th:text="${message}">Something went wrong.</p>
+  <a th:href="@{/login}">Go back to Login</a>
+</div>
+</body>
+</html>

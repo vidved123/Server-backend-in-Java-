@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Borrowed Books</title>
+  <link rel="stylesheet" th:href="@{/css/ViewBorrowedBooks.css}">
+</head>
+<body>
+<div class="container">
+  <h1>View Borrowed Books</h1>
+
+  <!-- Search Form -->
+  <form th:action="@{/view_borrowed_books}" method="get">
+    <div class="search-container">
+      <label>
+        <input type="text" name="searchQuery" placeholder="Search by Title or Author"
+               th:value="${searchQuery}">
+      </label>
+
+      <!-- Admin can search by userId -->
+      <div>
+        <label>
+          <input type="number" name="userId" placeholder="Search by User ID"
+                 th:value="${userId}">
+        </label>
+      </div>
+
+      <button type="submit">Search</button>
+    </div>
+  </form>
+
+  <!-- Borrowed Books Table -->
+  <table>
+    <thead>
+    <tr>
+      <th>Book ID</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Borrowed Date</th>
+      <th>Due Date</th>
+      <th>Username</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${borrowedBooks}">
+      <td th:text="${book.bookId}">1</td>
+      <td th:text="${book.title}">Sample Title</td>
+      <td th:text="${book.author}">Sample Author</td>
+      <td th:text="${book.borrowedDate}">2025-01-01</td>
+      <td th:text="${book.dueDate}">2025-01-10</td>
+      <td th:text="${book.username}">user123</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- Back to Library Button -->
+  <a th:href="@{/library}" class="button">Back to Library</a>
+
+  <!-- Flash Messages -->
+  <div class="flash-messages success" th:if="${successMessage}">
+    <p th:text="${successMessage}">Borrowed books loaded successfully!</p>
+  </div>
+</div>
+</body>
+</html>

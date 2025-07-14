@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registration</title>
+  <link rel="stylesheet" th:href="@{/css/Register.css}" />
+</head>
+<body>
+<div class="container">
+  <h2>Registration</h2>
+
+  <form th:action="@{/register}" th:object="${user}" method="post">
+    <ul th:if="${#fields.hasErrors('*')}">
+      <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+    </ul>
+
+    <label for="username">Username:</label>
+    <input type="text" th:field="*{username}" id="username" required />
+
+    <label for="email">Email:</label>
+    <input type="email" th:field="*{email}" id="email" required />
+
+    <label for="fullName">Full Name:</label>
+    <input type="text" th:field="*{fullName}" id="fullName" required />
+
+    <label for="sex">Sex:</label>
+    <select th:field="*{sex}" id="sex" required>
+      <option value="MALE">Male</option>
+      <option value="FEMALE">Female</option>
+      <option value="OTHER">Other</option>
+    </select>
+
+    <label for="mobileNumber">Mobile Number:</label>
+    <input type="text" th:field="*{mobileNumber}" id="mobileNumber" required />
+
+    <label for="countryCode">Country Code:</label>
+    <select th:field="*{countryCode}" id="countryCode" required>
+      <option value="US">United States (+1)</option>
+      <option value="CA">Canada (+1)</option>
+      <option value="GB">United Kingdom (+44)</option>
+      <option value="IND">India (+91)</option>
+    </select>
+
+    <label for="password">Password:</label>
+    <input type="password" th:field="*{password}" id="password" required />
+
+    <label for="confirmPassword">Confirm Password:</label>
+    <input type="password" th:field="*{confirmPassword}" id="confirmPassword" required />
+
+    <label for="role">Role:</label>
+    <select th:field="*{role}" id="role" required>
+      <option value="USER">User</option>
+      <option value="ADMIN">Admin</option>
+    </select>
+
+    <input type="submit" value="Register" />
+  </form>
+</div>
+</body>
+</html>

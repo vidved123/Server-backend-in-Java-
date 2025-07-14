@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Book</title>
+    <link rel="stylesheet" th:href="@{/css/AddBooks.css}" href="/css/AddBooks.css">
+
+</head>
+<body>
+<div class="container">
+    <h1>Add a New Book</h1>
+
+    <!-- Form for manual book addition -->
+    <form th:action="@{/add_books}" th:object="${book}" method="post" enctype="multipart/form-data">
+        <input type="text" th:field="*{title}" placeholder="Title" required>
+        <input type="text" th:field="*{author}" placeholder="Author" required>
+        <input type="number" th:field="*{totalCopies}" placeholder="Total Copies" required min="1">
+        <input type="file" name="bookImgTestForce" accept="image/*" />
+        <button type="submit">ADD BOOK</button>
+    </form>
+
+    <!-- Form for Excel file upload -->
+    <form th:action="@{/upload_books_excel}" method="post" enctype="multipart/form-data">
+        <input type="file" name="excel_file" accept=".xlsx" required>
+        <button type="submit">UPLOAD EXCEL</button>
+    </form>
+
+    <!-- Back to Library button -->
+    <a th:href="@{/library}" class="back-link">Back to Library</a>
+
+    <!-- Flash messages section -->
+    <div class="flash-messages">
+        <ul th:if="${messages}" th:each="msg : ${messages}">
+            <li th:text="${msg.text}" th:class="${msg.category}"></li>
+        </ul>
+        <div th:if="${success}" class="success" th:text="${success}"></div>
+    </div>
+</div>
+
+<script src="/js/addbooks.js" defer></script>
+</body>
+</html>

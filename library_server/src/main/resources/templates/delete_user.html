@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Delete User</title>
+  <link rel="stylesheet" th:href="@{/css/DeleteUser.css}" />
+</head>
+<body>
+<div class="container">
+  <h1>Delete User</h1>
+
+  <!-- Flash Messages -->
+  <div th:if="${message}" id="messageContainer" class="message" th:classappend="${messageType}" style="display: block;">
+    <span id="messageText" th:text="${message}"></span>
+  </div>
+
+  <!-- User Table -->
+  <div id="userTableContainer" th:if="${users != null and !users.isEmpty()}">
+    <table>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Full Name</th>
+        <th>Username</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="user : ${users}">
+        <td th:text="${user.id}">1</td>
+        <td th:text="${user.fullName}">John Doe</td>
+        <td th:text="${user.username}">johndoe</td>
+        <td>
+          <form th:action="@{/delete_user}" method="post" class="delete-user-form">
+            <input type="hidden" name="user_id" th:value="${user.id}" />
+            <button type="submit" class="delete-button">Delete</button>
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- No Users Message -->
+  <p id="noUsersMessage" th:if="${users == null or users.isEmpty()}" style="display: block;">No users available.</p>
+
+  <!-- Back Button -->
+  <div class="back-button">
+    <a th:href="@{/dashboard}">Back to Dashboard</a>
+  </div>
+</div>
+
+<!-- Add external script for confirm dialog -->
+<script th:src="@{/js/deleteUser.js}"></script>
+</body>
+</html>

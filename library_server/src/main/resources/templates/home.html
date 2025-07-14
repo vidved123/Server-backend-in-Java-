@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Home</title>
+  <link rel="stylesheet" th:href="@{/css/Home.css}">
+</head>
+<body>
+<h1>Welcome to the Library Home Page</h1>
+<p class="welcome-text">Explore a world of knowledge at your fingertips!</p>
+
+<!-- Navigation for logged-in users -->
+<nav>
+  <div class="nav-buttons" th:if="${logged_in}">
+    <a th:href="@{/profile}">Profile</a>
+    <a th:href="@{/logout}">Logout</a>
+  </div>
+</nav>
+
+<!-- NOT logged in section -->
+<div class="container" th:if="${logged_in != true}">
+  <p>Please log in or register to continue.</p>
+  <a class="button" th:href="@{/login}">Login</a>
+  <a class="button" th:href="@{/register}">Register</a>
+</div>
+
+<!-- Logged in section -->
+<div class="container" th:if="${logged_in}">
+  <p>You are already logged in. Head over to your profile or explore the library!</p>
+  <a class="button" th:href="@{/profile}">Go to Profile</a>
+</div>
+
+<noscript>
+  <div class="container">
+    <p><strong>JavaScript is disabled.</strong> Please enable JavaScript to access full functionality.</p>
+  </div>
+</noscript>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Books</title>
+  <link rel="stylesheet" th:href="@{/css/Books.css}">
+</head>
+<body>
+<div class="book-list-container">
+  <h1>Available Books</h1>
+
+  <!-- Optional status message -->
+  <p th:if="${statusMessage}" th:text="${statusMessage}" class="status-message"></p>
+
+  <!-- If books are available -->
+  <ul id="book-list" th:if="${books != null and #lists.isNotEmpty(books)}">
+    <li th:each="book : ${books}">
+      <div class="book-info">
+        <img th:src="@{/images/{img}(img=${book.imageName})}" alt="Book Cover" class="book-cover book-cover-img" />
+        <span>
+          <span class="book-title" th:text="${book.title}">Book Title</span> by
+          <span class="book-author" th:text="${book.author}">Author Name</span>
+        </span>
+      </div>
+      <a th:href="@{'/borrow/' + ${book.id}}">Borrow Book</a>
+    </li>
+  </ul>
+
+  <!-- If no books are available -->
+  <p id="no-books-message" th:if="${books == null or #lists.isEmpty(books)}">
+    No books available at the moment.
+  </p>
+</div>
+<script src="/static/js/books.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+
+  <!-- Google Fonts -->
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap"
+        th:attr="href=@{'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap'}"/>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" th:href="@{/css/Login.css}">
+</head>
+<body>
+
+<div class="container">
+  <h2>Login</h2>
+
+  <!-- Success message -->
+  <div th:if="${successMessage}" class="success-message">
+    <p th:text="${successMessage}"></p>
+  </div>
+
+  <!-- Error message -->
+  <div th:if="${errorMessage}" class="error-message">
+    <p th:text="${errorMessage}"></p>
+  </div>
+
+  <!-- Login form -->
+  <form th:action="@{/auth/login}" method="post" th:object="${loginRequest}" id="loginForm">
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" th:field="*{username}" id="username" required autocomplete="username">
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" th:field="*{password}" id="password" required autocomplete="current-password">
+    </div>
+
+    <button type="submit">Login</button>
+    <a th:href="@{/forgot-password}" class="forgot-password">Forgot your password?</a>
+
+    <!-- Field-level validation errors -->
+    <ul id="errorList" th:if="${#fields.hasErrors('*')}">
+      <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+    </ul>
+  </form>
+</div>
+
+</body>
+</html>

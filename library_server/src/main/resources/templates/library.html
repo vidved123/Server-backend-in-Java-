@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Library</title>
+  <link rel="stylesheet" th:href="@{/css/Library.css}" />
+</head>
+<body>
+
+<header>
+  <h1 id="username">Welcome, <span th:text="${username}">User</span></h1>
+  <p id="bookCount">Total Books: <span th:text="${bookCount}">0</span></p>
+</header>
+
+<!-- Show user-specific content only if authenticated -->
+<div th:if="${isAuthenticated}">
+<!-- Normal user section - only show for regular users (non-admin) -->
+<section id="userSection" th:if="${userRole != 'ADMIN'}">
+  <h2>Borrowed Books</h2>
+  <table id="borrowedBooksTable">
+    <thead>
+    <tr>
+      <th>Book ID</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Borrowed Date</th>
+      <th>Due Date</th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr th:each="book : ${borrowedBooks}">
+      <td th:text="${book.bookId}">101</td>
+      <td th:text="${book.title}">The Great Gatsby</td>
+      <td th:text="${book.author}">F. Scott Fitzgerald</td>
+      <td th:text="${book.borrowedDate}">2025-01-01</td>
+      <td th:text="${book.dueDate}">2025-01-10</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <h2>Overdue Books</h2>
+  <table class="overdue-table" id="overdueBooksTable">
+    <thead>
+    <tr>
+      <th>Book ID</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Borrowed Date</th>
+      <th>Due Date</th>
+      <th>Overdue Days</th>
+      <th>Fine</th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr th:each="book : ${borrowedBooks}" th:if="${book.overdueDays > 0}">
+      <td th:text="${book.bookId}">101</td>
+      <td th:text="${book.title}">The Great Gatsby</td>
+      <td th:text="${book.author}">F. Scott Fitzgerald</td>
+      <td th:text="${book.borrowedDate}">2025-01-01</td>
+      <td th:text="${book.dueDate}">2025-01-10</td>
+      <td th:text="${book.overdueDays}">3</td>
+      <td th:text="'$' + ${#numbers.formatDecimal(book.fine, 1, 2)}">5.00</td>
+    </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- Admin buttons section -->
+  <div class="admin-buttons" id="adminButtons" th:if="${userRole == 'ADMIN'}">
+  <a th:href="@{/add_books}">Add Books</a>
+  <a th:href="@{/book_master}">Book Master</a>
+</div>
+
+  <!-- Common action buttons for authenticated users -->
+<div class="action-buttons">
+  <a th:href="@{/view_books}">View Books</a>
+  <a th:href="@{/borrow}">Borrow Books</a>
+  <a th:href="@{/view_borrowed_books}">View Borrowed Books</a>
+  <a th:href="@{/return_books}">Return Books</a>
+  <a th:href="@{/dashboard}">Dashboard</a>
+  </div>
+</div>
+
+<!-- Show login prompt for unauthenticated users -->
+<div th:if="${!isAuthenticated}" class="guest-section">
+  <h2>Welcome to Our Library</h2>
+  <p>Please log in to access your borrowed books and library features.</p>
+  
+  <div class="guest-buttons">
+    <a th:href="@{/login}" class="login-btn">Login</a>
+    <a th:href="@{/view_books}" class="view-books-btn">View Books</a>
+  </div>
+  
+  <div class="library-info">
+    <h3>Library Information</h3>
+    <p>Total Books Available: <span th:text="${bookCount}">0</span></p>
+    <p>Browse our collection and discover your next great read!</p>
+  </div>
+</div>
+
+<footer>
+  <p id="footerYear">© 2025 Your Library. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

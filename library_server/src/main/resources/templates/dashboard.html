@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+  <link rel="stylesheet" th:href="@{/css/Dashboard.css}" />
+</head>
+<body>
+
+<div class="container">
+  <h1>Dashboard</h1>
+  <p>Total Books: <strong th:text="${totalBooks}" id="totalBooks">Loading...</strong></p>
+  <p>Total Borrowed Books: <strong th:text="${totalBorrowedBooks}" id="totalBorrowedBooks">Loading...</strong></p>
+
+  <h2>Borrowed Books</h2>
+  <ul id="borrowedBooksList">
+    <li th:each="borrowedBook : ${borrowedBooks}" th:text="${borrowedBook.book.title} + ' by ' + ${borrowedBook.book.author} + ' (Borrowed on ' + ${#temporals.format(borrowedBook.borrowedDate, 'yyyy-MM-dd HH:mm')} + ')'">Loading...</li>
+  </ul>
+
+  <div class="button-group">
+    <div id="adminActions" th:if="${userRole} == 'ADMIN'">
+      <a th:href="@{/delete_user}" class="delete-user-btn">Delete User</a>
+      <a th:href="@{/view_users}" class="users-roster-btn">View Users</a>
+      <a th:href="@{/add_user}" class="add-user-btn">Add User</a>
+    </div>
+    <a th:href="@{/library}" class="library-btn">Library</a>
+    <a th:href="@{/profile}" class="profile-btn">Profile</a>
+    <a th:href="@{/home}" class="back-home-btn">Back to Home</a>
+  </div>
+
+  <div id="messageBox" class="message" style="display: none;">
+    <p id="messageText"></p>
+  </div>
+</div>
+
+</body>
+</html>
