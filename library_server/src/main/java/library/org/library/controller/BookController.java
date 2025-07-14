@@ -1,5 +1,6 @@
 package org.library.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,8 @@ import java.util.Map;
 import org.library.entity.Book;
 import org.library.service.BookMasterService;
 import org.library.service.BookService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,8 +23,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class BookController {
 
+    private static final Logger logger = LoggerFactory.getLogger(BookController.class);
+
     private final BookService bookService;
     private final BookMasterService bookMasterService;
+
+    // Use the specific path for view books page
+    private final String imageFolderPath = "/Users/vidhyut/Desktop/Prathisthan Projects/Server-Backend-java/demo/src/main/resources/static/images";
 
     public BookController(BookService bookService, BookMasterService bookMasterService) {
         this.bookService = bookService;
@@ -45,15 +53,25 @@ public class BookController {
 
     @GetMapping("/add_books")
     public String showAddBookForm(Model model) {
+        model.addAttribute("book", new Book());
         model.addAttribute("messages", new ArrayList<>());
         return "add_books";
     }
 
     @PostMapping("/add_books")
     public String handleAddBook(@ModelAttribute Book book,
-                                @RequestParam("image") MultipartFile image,
+                                @RequestParam("bookImgTestForce") MultipartFile image,
+                                RedirectAttributes redirectAttributes,
                                 Model model) {
         try {
+            // Set availableCopies to totalCopies on creation
+            book.setAvailableCopies(book.getTotalCopies());
+
+            // Log for debugging
+            System.out.println("Book received: " + book);
+            System.out.println("totalCopies: " + book.getTotalCopies());
+            System.out.println("availableCopies: " + book.getAvailableCopies());
+
             if (image.isEmpty()) {
                 addMessage(model, "error", "Image file is required.");
                 return "add_books";
@@ -61,7 +79,7 @@ public class BookController {
 
             bookService.addBook(book, image);
             addMessage(model, "success", "Book added successfully!");
-            return "redirect:/book_master";
+            return "add_books";
         } catch (Exception e) {
             addMessage(model, "error", "Error: " + e.getMessage());
             return "add_books";
@@ -92,8 +110,9 @@ public class BookController {
         List<Book> books = bookMasterService.getBooksMaster();
         model.addAttribute("books", books);
 
-        boolean isAdmin = SecurityContextHolder.getContext().getAuthentication().getAuthorities()
-                .stream()
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdmin = authentication != null && authentication.getAuthorities() != null &&
+                authentication.getAuthorities().stream()
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
         model.addAttribute("isAdmin", isAdmin);
 
@@ -104,15 +123,34 @@ public class BookController {
     public String viewBooks(@RequestParam(required = false) String search, Model model) {
         List<Book> books = (search != null && !search.trim().isEmpty()) ?
                 bookService.searchBooks(search) : bookService.getAllBooks();
+
+        // Set default image if file does not exist
+        for (Book book : books) {
+            logger.info("Checking image for book '{}': {}", book.getTitle(), book.getImage());
+            if (book.getImage() == null || book.getImage().isEmpty()) {
+                book.setImage("default.jpg");
+                logger.info("Book '{}' has no image, setting to default.jpg", book.getTitle());
+            } else {
+                // Use the configured image folder path from application.properties
+                File imageFile = new File(imageFolderPath + "/" + book.getImage());
+                logger.info("Image file path: {} -> exists: {}", imageFile.getPath(), imageFile.exists());
+                if (!imageFile.exists()) {
+                    book.setImage("default.jpg");
+                    logger.info("Book '{}' image not found, setting to default.jpg", book.getTitle());
+                }
+            }
+        }
+
         model.addAttribute("books", books);
         model.addAttribute("searchQuery", search);
 
-        boolean isAdmin = SecurityContextHolder.getContext().getAuthentication().getAuthorities()
-                .stream()
+        var authentication = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdmin = authentication != null && authentication.getAuthorities() != null &&
+                authentication.getAuthorities().stream()
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
         model.addAttribute("isAdmin", isAdmin);
 
-        model.addAttribute("messages", new ArrayList<>());
+        model.addAttribute("messages", new java.util.ArrayList<>());
         return "view_books";
     }
 
