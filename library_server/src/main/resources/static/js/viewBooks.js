@@ -41,3 +41,36 @@ function selectAll(source) {
   checkboxes.forEach ? checkboxes.forEach(cb => cb.checked = source.checked) :
     Array.from(checkboxes).forEach(cb => cb.checked = source.checked);
 }
+
+// Attach event listeners for CSP compliance
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Attach deleteBooks to the delete button
+  const deleteBtn = document.getElementById('delete-selected-books');
+  if (deleteBtn) {
+    deleteBtn.addEventListener('click', deleteBooks);
+  }
+
+  // Attach selectAll to the select-all checkbox
+  const selectAllCheckbox = document.getElementById('select-all-checkbox');
+  if (selectAllCheckbox) {
+    selectAllCheckbox.addEventListener('change', function() {
+      selectAll(this);
+    });
+  }
+
+  // Fallback: Prevent form submission via Enter key (optional, for safety)
+  const bookForm = document.getElementById('book-form');
+  if (bookForm) {
+    bookForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+    });
+  }
+
+  // Existing: fallback for book images
+  document.querySelectorAll('.book-image').forEach(function(img) {
+    img.addEventListener('error', function() {
+      this.src = '/images/default.jpg';
+    });
+  });
+});
