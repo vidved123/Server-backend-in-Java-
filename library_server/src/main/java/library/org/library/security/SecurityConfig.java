@@ -35,6 +35,9 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        System.out.println("🚀 SecurityConfig - Building security filter chain");
+        System.out.println("🚀 SecurityConfig - Public paths: " + securityProperties.getPublicPaths());
+        
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
@@ -42,6 +45,7 @@ public class SecurityConfig {
                         org.springframework.security.config.http.SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/register").permitAll()
                         .requestMatchers(securityProperties.getPublicPaths().toArray(new String[0])).permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
@@ -72,6 +76,7 @@ public class SecurityConfig {
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
                 );
 
+        System.out.println("🚀 SecurityConfig - Security filter chain built successfully");
         return http.build();
     }
 }
