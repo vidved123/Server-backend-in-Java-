@@ -1,5 +1,8 @@
 package org.library.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.library.dto.ReturnBooksdto;
 import org.library.entity.enums.Role;
 import org.library.service.ReturnBooksService;
@@ -10,10 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @SuppressWarnings("unused")
 @Controller
@@ -100,7 +103,23 @@ public class ReturnBooksController {
         // If the user is an admin, process bookIds and userIds together
         if (role == Role.ADMIN) {
             if (bookIdsAndUserIds != null) {
-                finalBookIds = parseBookIdsAndUserIds(bookIdsAndUserIds, model);
+                finalBookIds = new ArrayList<>();
+                userIds = new ArrayList<>();
+                for (String pair : bookIdsAndUserIds) {
+                    String[] parts = pair.split(":");
+                    if (parts.length == 2) {
+                        try {
+                            finalBookIds.add(Long.parseLong(parts[0]));
+                            userIds.add(Long.parseLong(parts[1]));
+                        } catch (NumberFormatException e) {
+                            model.addAttribute("error", "Invalid book ID or user ID format.");
+                            logger.error("Invalid book ID or user ID format in bookIdsAndUserIds: {}", pair);
+                        }
+                    } else {
+                        model.addAttribute("error", "Invalid format for book and user IDs.");
+                        logger.error("Invalid format for book and user IDs: {}", pair);
+                    }
+                }
             }
         } else {
             // For non-admin, process only the current user's books
@@ -109,7 +128,7 @@ public class ReturnBooksController {
 
         try {
             // Call the service to process the book return
-            returnBooksService.returnBooks(finalBookIds, null, currentUserId, role.name());
+            returnBooksService.returnBooks(finalBookIds, userIds, currentUserId, role.name());
             model.addAttribute("message", "Books returned successfully.");
             logger.info("✅ Books returned by user '{}'", username);
         } catch (Exception e) {
