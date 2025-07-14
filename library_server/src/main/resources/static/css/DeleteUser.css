@@ -1,31 +1,72 @@
 /* Vibrant Background and Base Styles */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #e0c3fc, #8ec5fc);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     margin: 0;
     padding: 0;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: start;
+    color: #fff;
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
 }
 
 .container {
     width: 90%;
     max-width: 950px;
     margin: 60px auto;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.13);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     padding: 40px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37), 0 4px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
     text-align: center;
+    position: relative;
+    z-index: 1;
 }
 
 h1 {
-    color: #4b2e83;
+    color: #fff;
     font-size: 2.5rem;
     margin-bottom: 25px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    background: linear-gradient(90deg, #f9d423, #a1c4fd, #c2e9fb, #f9d423);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 2px 8px rgba(161,196,253,0.10);
+    position: relative;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 2px;
 }
 
 /* Flash Message Styling */
@@ -56,31 +97,43 @@ table {
     border-collapse: collapse;
     margin: 30px 0;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    background: rgba(255,255,255,0.10);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.13), 0 4px 16px rgba(0,0,0,0.08);
 }
 
 th, td {
     padding: 18px;
     text-align: left;
     font-size: 16px;
+    color: #fff;
 }
 
 th {
-    background-color: #5f4b8b;
-    color: white;
+    background: linear-gradient(90deg, #a1c4fd, #c2e9fb);
+    color: #222;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    font-weight: 800;
+    border-bottom: 2.5px solid #a1c4fd;
+    box-shadow: 0 2px 8px rgba(161,196,253,0.10);
 }
 
 td {
-    color: #444;
+    color: #fff;
 }
 
 tr:nth-child(even) {
-    background-color: #f9f9fb;
+    background-color: rgba(255,255,255,0.05);
 }
 
-tr:hover {
-    background-color: #eef1f8;
+tr:hover td {
+    background: rgba(161,196,253,0.13);
+    transition: background 0.3s;
+    box-shadow: 0 2px 8px rgba(161,196,253,0.10);
 }
 
 /* Buttons */
@@ -88,16 +141,23 @@ tr:hover {
     background: linear-gradient(135deg, #f85032, #e73827);
     color: white;
     border: none;
-    padding: 10px 22px;
-    border-radius: 6px;
-    font-size: 14px;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s;
+    transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+    box-shadow: 0 4px 15px rgba(248, 80, 50, 0.18);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .delete-button:hover {
     background: linear-gradient(135deg, #d73827, #b53024);
-    transform: scale(1.05);
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 0 8px 25px rgba(248, 80, 50, 0.28);
 }
 
 .back-button {
@@ -108,15 +168,22 @@ tr:hover {
     text-decoration: none;
     background: linear-gradient(135deg, #36d1dc, #5b86e5);
     color: white;
-    padding: 14px 28px;
-    border-radius: 6px;
+    padding: 16px 32px;
+    border-radius: 12px;
     font-size: 16px;
-    transition: background 0.3s ease, transform 0.2s;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+    box-shadow: 0 4px 15px rgba(91, 192, 222, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: inline-block;
 }
 
 .back-button a:hover {
     background: linear-gradient(135deg, #3396dc, #4b6bd3);
-    transform: scale(1.05);
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 0 8px 25px rgba(91, 192, 222, 0.28);
 }
 
 /* Responsive Design */
@@ -135,8 +202,8 @@ tr:hover {
     }
 
     .delete-button {
-        padding: 8px 15px;
-        font-size: 13px;
+        padding: 12px 20px;
+        font-size: 14px;
     }
 
     .back-button a {
