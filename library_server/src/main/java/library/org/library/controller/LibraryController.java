@@ -1,5 +1,8 @@
 package org.library.controller;
 
+import java.time.Year;
+import java.util.Optional;
+
 import org.library.entity.User;
 import org.library.repository.UserRepository;
 import org.library.service.LibraryService;
@@ -8,9 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.time.Year;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/library")
@@ -26,27 +26,35 @@ public class LibraryController {
 
     @GetMapping
     public String getLibraryPage(Authentication authentication, Model model) {
-        if (authentication == null || authentication.getName() == null) {
-            return "redirect:/login";  // Redirect to log in if the user is not authenticated
-        }
-
-        String username = authentication.getName();
-        Optional<User> userOpt = userRepository.findByUsername(username);
-
-        if (userOpt.isEmpty()) {
-            return "redirect:/login";  // Redirect if the user does not exist in the database
-        }
-
-        User user = userOpt.get();
+        // Since /library is a public path, we handle both authenticated and unauthenticated users
         int totalBooks = libraryService.getTotalBookCount();
-        var borrowedBooks = libraryService.getBorrowedBooksByUserId(user.getId());
-
-        // Add model attributes
+        
+        // Add basic model attributes that don't require authentication
         model.addAttribute("bookCount", totalBooks);
-        model.addAttribute("borrowedBooks", borrowedBooks);
-        model.addAttribute("username", user.getUsername());
-        model.addAttribute("userRole", user.getRole().name()); // Display role as a string (assuming it's an enum)
         model.addAttribute("year", Year.now().getValue());
+        
+        // If user is authenticated, add user-specific data
+        if (authentication != null && authentication.getName() != null) {
+            String username = authentication.getName();
+            Optional<User> userOpt = userRepository.findByUsername(username);
+
+            if (userOpt.isPresent()) {
+                User user = userOpt.get();
+                var borrowedBooks = libraryService.getBorrowedBooksByUserId(user.getId());
+
+                // Add user-specific model attributes
+                model.addAttribute("username", user.getUsername());
+                model.addAttribute("userRole", user.getRole().name());
+                model.addAttribute("borrowedBooks", borrowedBooks);
+                model.addAttribute("isAuthenticated", true);
+            }
+        } else {
+            // For unauthenticated users, provide default values
+            model.addAttribute("username", "Guest");
+            model.addAttribute("userRole", "GUEST");
+            model.addAttribute("borrowedBooks", java.util.Collections.emptyList());
+            model.addAttribute("isAuthenticated", false);
+        }
 
         return "library";  // Return the name of the Thymeleaf view (library.html)
     }
