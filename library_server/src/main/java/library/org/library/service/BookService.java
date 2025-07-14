@@ -14,6 +14,7 @@ import org.library.entity.Book;
 import org.library.repository.BookRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +27,9 @@ public class BookService {
 
     private final BookRepository bookRepository;
 
+    @Value("${library.images.path}")
+    private String imageFolderPath;
+
     public BookService(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
@@ -34,36 +38,26 @@ public class BookService {
     public void addBook(Book book, MultipartFile imageFile) throws Exception {
         if (imageFile != null && !imageFile.isEmpty()) {
             try {
-                // Use the original filename for the image
                 String imageName = imageFile.getOriginalFilename();
-
-                // Sanitize the filename (optional)
                 assert imageName != null;
                 imageName = imageName.replaceAll("[^a-zA-Z0-9._-]", "_");
-
-                // Define the path to store the image (inside the static/images folder)
-                File imagePath = new File("src/main/resources/static/images", imageName);
-
-                // Ensure the directory exists, or create it
-                File directory = new File(imagePath.getParent());
+                File directory = new File(imageFolderPath);
                 if (!directory.exists()) {
                     boolean dirsCreated = directory.mkdirs();
                     if (!dirsCreated) {
                         throw new Exception("Failed to create directories for saving the image.");
                     }
                 }
-
-                // Transfer the image file to the specified path
+                File imagePath = new File(directory, imageName);
                 imageFile.transferTo(imagePath);
-
-                // Set the image name to store in the book record
                 book.setImage(imageName);
-                book.setImageUrl("/images/" + imageName);  // Correct URL for static content
+                book.setImageUrl("/images/" + imageName);
             } catch (Exception e) {
                 throw new Exception("Error while saving image file: " + e.getMessage(), e);
             }
         }
         book.setAvailable(true);
+        book.setAvailableCopies(book.getTotalCopies()); // Ensure availableCopies matches totalCopies
         bookRepository.save(book);
     }
 
