@@ -1,27 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
 body {
-    font-family: sans-serif;
-    background: linear-gradient(135deg, #6a82fb, #fc5c7d);
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     margin: 0;
     padding: 0;
     color: #fff;
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(2px);
 }
 
 h1 {
     text-align: center;
     margin-top: 40px;
+    font-size: 2.8rem;
+    letter-spacing: 2px;
+    font-weight: 900;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, #ffe29f 0%, #ffa99f 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
     color: #fff;
-    font-size: 2.5rem;
-    letter-spacing: 1px;
+    text-shadow: 0 2px 8px rgba(255,193,7,0.10);
+    position: relative;
+}
+
+h1::after {
+    content: '';
+    display: block;
+    margin: 0 auto;
+    margin-top: 10px;
+    width: 80px;
+    height: 4px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #ffe29f 0%, #ffa99f 100%);
+    box-shadow: 0 2px 8px #ffa99f;
 }
 
 table {
     width: 85%;
     margin: 50px auto;
     border-collapse: collapse;
-    background-color: #ffffff;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
+    background-color: rgba(255,255,255,0.15);
+    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.13), 0 4px 16px rgba(0, 0, 0, 0.08);
+    border-radius: 18px;
     overflow: hidden;
+    backdrop-filter: blur(18px);
 }
 
 th, td {
@@ -31,14 +69,16 @@ th, td {
 }
 
 th {
-    background-color: #3498db;
+    background: linear-gradient(135deg, #667eea, #764ba2);
     color: #fff;
     text-transform: uppercase;
     letter-spacing: 1px;
+    font-weight: 900;
+    border-bottom: 2.5px solid #fff;
 }
 
 td {
-    background-color: #f9f9f9;
+    background-color: rgba(255,255,255,0.92);
     color: #333;
 }
 
@@ -58,23 +98,36 @@ tr:hover td:hover {
 .button {
     display: block;
     width: fit-content;
-    padding: 12px 36px;
+    padding: 16px 36px;
     margin: 40px auto;
-    color: #ffffff;
-    background-color: #28a745;
-    border: none;
-    border-radius: 6px;
+    color: #fff;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border: 2.5px solid #fff;
+    border-radius: 14px;
     text-decoration: none;
     text-align: center;
-    font-size: 18px;
-    font-weight: bold;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    font-size: 1.08rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 6px 24px 0 rgba(102,126,234,0.25), 0 2px 8px rgba(102,126,234,0.10);
+    transition: background 0.3s, color 0.2s, transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    outline: none;
+    cursor: pointer;
+}
+
+.button:focus {
+    border-color: #ffd700;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.18), 0 8px 24px rgba(102,126,234,0.18);
 }
 
 .button:hover {
-    background-color: #218838;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #764ba2, #667eea);
+    color: #ffd700;
+    transform: translateY(-2px) scale(1.06);
+    box-shadow: 0 12px 32px 0 rgba(102,126,234,0.30), 0 8px 24px rgba(102,126,234,0.13);
+    border-color: #ffd700;
+    text-decoration: none;
 }
 
 @media (max-width: 768px) {
@@ -92,7 +145,7 @@ tr:hover td:hover {
     }
 
     .button {
-        padding: 10px 30px;
-        font-size: 16px;
+        padding: 12px 30px;
+        font-size: 1rem;
     }
 }
